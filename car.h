@@ -25,10 +25,30 @@ public:
 	Vec2 getSize() const { return m_size; }
 
 private:
+	// 車の挙動のバリエーション
+	typedef enum MoveType
+	{
+		kMoveTypeNormal,
+		kMoveTypeStop,
+		kMoveTypeJump,
+		kMoveTypeReturn,
+		
+		kMoveTypeNum,
+	};
+
+private:
+	void updateNormal();	// まっすぐ進む
+	void updateStop();		// 一時停止フェイント
+	void updateJump();		// ジャンプする
+	void updateReturn();	// 途中で引き返す
+
+private:
 	// グラフィックハンドル
 	int m_handle;
 	// グラフィックの幅と高さ	当たり判定にも使用する
 	Vec2 m_size;
+
+	int m_moveType;
 
 	// 移動開始までの待ち時間（フレーム数）
 	int m_waitFrame;

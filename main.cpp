@@ -1,8 +1,7 @@
 #include "DxLib.h"
-
 #include "game.h"
-#include "player.h"
-#include "car.h"
+
+#include "SceneMain.h"
 
 namespace
 {
@@ -39,11 +38,45 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// ダブルバッファモード
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	// 現在のシーン番号	0:Title 1:Main 2:Test
+	int sceneNo = 0;
+
+	SceneMain sceneMain;
+	SceneTitle sceneTitle;
+	swich(sceneNo)
+	{
+	case 0:
+		sceneTitle.init();
+		vreak;
+	case 1:
+		sceneMain.init();
+		vreak;
+	}
+
+	
 	while (ProcessMessage() == 0)
 	{
 		LONGLONG  time = GetNowHiPerformanceCount();
 		// 画面のクリア
 		ClearDrawScreen();
+
+		// シーン変更フラグ
+		bool  isChange = false;
+		switch (sceneNo)
+		{
+		case 0:
+			isChange = sceneTitle.update();
+			sceneTitle.draw();
+			if (isChange)
+			{
+				sceneTitle.end();
+
+				sceneMain.init();
+				sceneNo = 1;
+			}
+		}
+
+
 
 		player.update();
 		car.update();
